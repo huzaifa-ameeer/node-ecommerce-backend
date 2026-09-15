@@ -4,6 +4,7 @@ import connectDb from "./config/db.js";
 import cors from "cors"
 import chalk from "chalk";
 import testRoute from "./routes/test.routes.js";
+import userRoute from "./routes/user.routes.js"
 
 //dot env config
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(cors())
 
 //routes
 app.use("/api/v1", testRoute)
+app.use("/api/v1/user", userRoute)
 
 
 //server listening
