@@ -10,6 +10,13 @@ export const registerController = async(req, res) => {
                 success: false
             }) 
         }
+        const existingUser = await userModel.findOne({email})
+        if(existingUser) {
+            return res.status(409).json({
+                message: "email already taken",
+                success: false
+            })
+        }
         const user = await userModel.create({
             name, email, password
         })
