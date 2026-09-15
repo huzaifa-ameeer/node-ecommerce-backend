@@ -59,12 +59,23 @@ export const loginController = async (req, res) => {
         success: false,
       });
     }
-    return res.status(200).json({
-      message: "login successful",
-      success: true,
-      user,
-    });
+    const token = user.generateToken();
+
+    res
+      .status(200)
+      .cookie("token", token, {
+        expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+        secure: process.env.NODE_ENV === "development" ? true : false,
+        sameSite: process.env.NODE_ENV === "development" ? true : false,
+        httpOnly: true,
+      })
+      .json({
+        message: "login successful",
+        success: true,
+        user,
+      });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: "internal server error",
       success: false,

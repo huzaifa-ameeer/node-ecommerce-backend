@@ -3,6 +3,7 @@ import express from "express";
 import connectDb from "./config/db.js";
 import cors from "cors"
 import chalk from "chalk";
+import cookieParser from "cookie-parser";
 import testRoute from "./routes/test.routes.js";
 import userRoute from "./routes/user.routes.js"
 
@@ -18,6 +19,7 @@ const port = process.env.PORT || 3000;
 //middlewares
 app.use(express.json())
 app.use(cors())
+app.use(cookieParser())
 
 
 //routes
