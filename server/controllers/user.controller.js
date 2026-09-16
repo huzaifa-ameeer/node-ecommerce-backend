@@ -86,14 +86,19 @@ export const loginController = async (req, res) => {
 //user profile controller
 export const userProfileController = async (req, res) => {
     try {
+        const user = await userModel.findById(req.user._id)
+        user.password = undefined
         return res.status(200).json({
             message: "user profile fetched successfully",
-            success: true
+            success: true,
+            user
         })
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
             message: "internal server error",
-            sucess: false
+            sucess: false,
+            
         })
     }
 }
