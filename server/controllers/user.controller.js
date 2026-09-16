@@ -123,3 +123,27 @@ export const logoutController = async (req, res) => {
     });
   }
 };
+
+//update user info
+export const updateUserController = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    const user = await userModel.findById(req.user._id);
+
+    if (name) user.name = name;
+    if (email) user.email = email;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "user updated successfully",
+      success: true,
+      user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "internal server error",
+      success: false,
+    });
+  }
+};

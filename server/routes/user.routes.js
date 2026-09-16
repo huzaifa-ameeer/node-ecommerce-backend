@@ -1,19 +1,21 @@
 import express from "express"
-import { loginController, logoutController, registerController, userProfileController } from "../controllers/user.controller.js"
+import { loginController, logoutController, registerController, updateUserController, userProfileController } from "../controllers/user.controller.js"
 import isAuth from "../middleware/auth.middleware.js"
 
 const router = express.Router()
 
 //routes
 
-//register user
+//register user (POST)
 router.post("/register", registerController)
-//login user
+//login user (POST)
 router.post("/login", loginController)
-//user profile
+//user profile (GET)
 router.get("/profile", isAuth, userProfileController)
-//logout user
+//logout user (GET)
 router.get("/logout", logoutController)
+//update user (PUT)
+router.put("/update-profile", isAuth, updateUserController)
 
 //exports
 export default router
