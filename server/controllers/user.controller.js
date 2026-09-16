@@ -82,3 +82,18 @@ export const loginController = async (req, res) => {
     });
   }
 };
+
+//user profile controller
+export const userProfileController = async (req, res) => {
+    try {
+        return res.status(200).json({
+            message: "user profile fetched successfully",
+            success: true
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: "internal server error",
+            sucess: false
+        })
+    }
+}
