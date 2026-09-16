@@ -65,8 +65,8 @@ export const loginController = async (req, res) => {
       .status(200)
       .cookie("token", token, {
         expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
-        secure: process.env.NODE_ENV === "development" ? true : false,
-        sameSite: process.env.NODE_ENV === "development" ? true : false,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
         httpOnly: true,
       })
       .json({
@@ -85,20 +85,41 @@ export const loginController = async (req, res) => {
 
 //user profile controller
 export const userProfileController = async (req, res) => {
-    try {
-        const user = await userModel.findById(req.user._id)
-        user.password = undefined
-        return res.status(200).json({
-            message: "user profile fetched successfully",
-            success: true,
-            user
-        })
-    } catch (error) {
-        console.log(error)
-        return res.status(500).json({
-            message: "internal server error",
-            sucess: false,
-            
-        })
-    }
-}
+  try {
+    const user = await userModel.findById(req.user._id);
+    user.password = undefined;
+    return res.status(200).json({
+      message: "user profile fetched successfully",
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "internal server error",
+      sucess: false,
+    });
+  }
+};
+
+//logout user
+export const logoutController = async (req, res) => {
+  try {
+    return res
+      .status(200)
+      .clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      })
+      .json({
+        message: "user logout successful",
+        success: true,
+      });
+  } catch (error) {
+    return res.status(500).json({
+      message: "internal server error",
+      success: false,
+    });
+  }
+};
