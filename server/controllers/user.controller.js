@@ -97,12 +97,12 @@ export const userProfileController = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       message: "internal server error",
-      sucess: false,
+      success: false,
     });
   }
 };
 
-//logout user
+//logout user controller
 export const logoutController = async (req, res) => {
   try {
     return res
@@ -124,7 +124,7 @@ export const logoutController = async (req, res) => {
   }
 };
 
-//update user info
+//update user info controller
 export const updateUserController = async (req, res) => {
   try {
     const { name, email } = req.body;
@@ -141,6 +141,47 @@ export const updateUserController = async (req, res) => {
       user,
     });
   } catch (error) {
+    return res.status(500).json({
+      message: "internal server error",
+      success: false,
+    });
+  }
+};
+
+//update password controller
+export const updatePasswordController = async (req, res) => {
+  try {
+    const user = req.user;
+    const { oldPassword, newPassword } = req.body;
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({
+        message: "please fill out all fields",
+        success: false,
+      });
+    }
+    const isMatch = await user.comparePassword(oldPassword);
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "incorrect password",
+        success: false,
+      });
+    }
+
+    if(oldPassword == newPassword) {
+        return res.status(400).json({
+            message: "password should not be same"
+        })
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    return res.status(200).json({
+      message: "password updated successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: "internal server error",
       success: false,
