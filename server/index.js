@@ -6,12 +6,20 @@ import chalk from "chalk";
 import cookieParser from "cookie-parser";
 import testRoute from "./routes/test.routes.js";
 import userRoute from "./routes/user.routes.js"
+import { v2 as cloudinary } from "cloudinary";
 
 //dot env config
 dotenv.config();
 
-//db func called
+//database connection
 connectDb()
+
+//cloudinary config
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET
+})
 
 const app = express();
 const port = process.env.PORT || 3000;

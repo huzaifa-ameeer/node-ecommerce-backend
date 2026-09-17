@@ -1,4 +1,6 @@
 import userModel from "../models/user.model.js";
+import { getDataUri } from "../utils/feature.js";
+import { v2 as cloudinary } from "cloudinary";
 
 //register controller
 export const registerController = async (req, res) => {
@@ -167,10 +169,10 @@ export const updatePasswordController = async (req, res) => {
       });
     }
 
-    if(oldPassword == newPassword) {
-        return res.status(400).json({
-            message: "password should not be same"
-        })
+    if (oldPassword == newPassword) {
+      return res.status(400).json({
+        message: "password should not be same",
+      });
     }
 
     user.password = newPassword;
@@ -184,6 +186,47 @@ export const updatePasswordController = async (req, res) => {
     console.log(error);
     return res.status(500).json({
       message: "internal server error",
+      success: false,
+    });
+  }
+};
+
+//update user profile pic controller
+export const updateProfilePicController = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        message: "profile picture file is required",
+        success: false,
+      });
+    }
+
+    const user = await userModel.findById(req.user._id);
+
+    //get a file from user
+    const file = getDataUri(req.file);
+
+    //delete previous pic if exists
+    if (user.profilePic && user.profilePic.public_id) {
+      await cloudinary.uploader.destroy(user.profilePic.public_id);
+    }
+
+    //update current pic
+    const cdb = await cloudinary.uploader.upload(file.content);
+    user.profilePic = {
+      public_id: cdb.public_id,
+      url: cdb.secure_url,
+    };
+    //save
+    await user.save();
+    return res.status(200).json({
+      message: "profile pic updated successfully",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "internal server error",
+      error,
       success: false,
     });
   }

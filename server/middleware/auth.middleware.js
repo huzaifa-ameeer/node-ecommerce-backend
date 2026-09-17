@@ -10,8 +10,17 @@ const isAuth = async (req, res, next) => {
     });
   }
   const decodedData = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
   const user = await userModel.findById(decodedData.id);
-  req.user = user
+
+  if (!user) {
+    return res.status(401).json({
+      message: "user not found",
+      success: false,
+    });
+  }
+
+  req.user = user;
   next();
 };
 
