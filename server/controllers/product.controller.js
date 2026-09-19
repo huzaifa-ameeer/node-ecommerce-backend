@@ -46,42 +46,42 @@ export const getSingleProductController = async (req, res) => {
 };
 
 // //create product controller
-// export const createProductController = async (req, res) => {
-//     try {
-//         const {name,description,price,stock,category,} = req.body
+export const createProductController = async (req, res) => {
+    try {
+        const {name,description,price,stock,category,} = req.body
 
-//         // if(!name || !description || !price || !stock || !category) {
-//         //     return res.status(400).json({
-//         //         message: "please provide all the field content",
-//         //         success: false
-//         //     })
-//         // }
-//         const file = getDataUri(req.file)
-//         if(!req.file) {
-//             return res.status(400).json({
-//                 message: "please provide product image",
-//                 success: false
-//             })
-//         }
-//         const cdb = await cloudinary.uploader.upload(file.content)
-//         const image = {
-//             public_id: cdb.public_id,
-//             url: cdb.secure_url
-//         }
-//         const product = await productModel.create({
-//             name, description, price, stock, category, images:[image]
-//         })
+        // if(!name || !description || !price || !stock || !category) {
+        //     return res.status(400).json({
+        //         message: "please provide all the field content",
+        //         success: false
+        //     })
+        // }
+        const file = getDataUri(req.file)
+        if(!req.file) {
+            return res.status(400).json({
+                message: "please provide product image",
+                success: false
+            })
+        }
+        const cdb = await cloudinary.uploader.upload(file.content)
+        const image = {
+            public_id: cdb.public_id,
+            url: cdb.secure_url
+        }
+        const product = await productModel.create({
+            name, description, price, stock, category, images:[image]
+        })
 
-//         return res.status(201).json({
-//             message: "product created successfully",
-//             success: true,
-//             product
-//         })
+        return res.status(201).json({
+            message: "product created successfully",
+            success: true,
+            product
+        })
 
-//     } catch (error) {
-//         return res.status(500).json({
-//         message: "invalid id",
-//         success: false,
-//       });
-//     }
-// }
+    } catch (error) {
+        return res.status(500).json({
+        message: "invalid id",
+        success: false,
+      });
+    }
+}

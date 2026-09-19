@@ -12,7 +12,7 @@ router.get("/get-all", getAllProductsController)
 //get single product (GET)
 router.get("/:id", getSingleProductController)
 // //create product (POST)
-// router.post("/create", isAuth, singleUpload, createProductController)
+router.post("/create", isAuth, singleUpload, createProductController)
 
 //exports
 export default router
