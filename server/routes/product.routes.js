@@ -10,7 +10,7 @@ const router = express.Router()
 //get all products (GET)
 router.get("/get-all", getAllProductsController)
 //get single product (GET)
-// router.get("/:id", getSingleProductController)
+router.get("/:id", getSingleProductController)
 // //create product (POST)
 // router.post("/create", isAuth, singleUpload, createProductController)
 

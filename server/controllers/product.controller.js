@@ -20,30 +20,30 @@ export const getAllProductsController = async (req, res) => {
 };
 
 //get single product controller
-// export const getSingleProductController = async (req, res) => {
-//   try {
-//     const product = await productModel.findById(req.params.id);
-//     if (!product) {
-//       return res.status(404).json({
-//         message: "product not found",
-//         success: false,
-//       });
-//     }
-//     return res.status(200).json({
-//       message: "product found successfully",
-//       success: true,
-//       product,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     if (error.name === "CastError") {
-//       return res.status(500).json({
-//         message: "invalid id",
-//         success: false,
-//       });
-//     }
-//   }
-// };
+export const getSingleProductController = async (req, res) => {
+  try {
+    const product = await productModel.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({
+        message: "product not found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      message: "product found successfully",
+      success: true,
+      product,
+    });
+  } catch (error) {
+    console.log(error);
+    if (error.name === "CastError") {
+      return res.status(500).json({
+        message: "invalid id",
+        success: false,
+      });
+    }
+  }
+};
 
 // //create product controller
 // export const createProductController = async (req, res) => {
