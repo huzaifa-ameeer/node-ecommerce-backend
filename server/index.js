@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import testRoute from "./routes/test.routes.js";
 import userRoute from "./routes/user.routes.js"
 import { v2 as cloudinary } from "cloudinary";
+import productRoutes from "./routes/product.routes.js"
 
 //dot env config
 dotenv.config();
@@ -33,6 +34,7 @@ app.use(cookieParser())
 //routes
 app.use("/api/v1", testRoute)
 app.use("/api/v1/user", userRoute)
+app.use("/api/v1/products", productRoutes)
 
 
 //server listening
