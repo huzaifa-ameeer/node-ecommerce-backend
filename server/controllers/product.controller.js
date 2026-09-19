@@ -45,7 +45,7 @@ export const getSingleProductController = async (req, res) => {
   }
 };
 
-// //create product controller
+//create product controller
 export const createProductController = async (req, res) => {
   try {
     const { name, description, price, stock, category } = req.body;
@@ -56,13 +56,14 @@ export const createProductController = async (req, res) => {
     //         success: false
     //     })
     // }
-    const file = getDataUri(req.file);
     if (!req.file) {
       return res.status(400).json({
         message: "please provide product image",
         success: false,
       });
     }
+    const file = getDataUri(req.file);
+
     const cdb = await cloudinary.uploader.upload(file.content);
     const image = {
       public_id: cdb.public_id,
@@ -108,7 +109,7 @@ export const updateProductController = async (req, res) => {
     if (stock) product.stock = stock;
     if (category) product.category = category;
 
-    await product.save()
+    await product.save();
 
     return res.status(200).json({
       message: "product updated successfully",
@@ -122,5 +123,41 @@ export const updateProductController = async (req, res) => {
         success: false,
       });
     }
+  }
+};
+
+//update product image controller
+export const updateProductImageController = async (req, res) => {
+  try {
+    const product = await productModel.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({
+        message: "product not found",
+        success: false,
+      });
+    }
+    if (!req.file) {
+      return res.status(400).json({
+        message: "please provide product image",
+        success: false,
+      });
+    }
+    const file = getDataUri(req.file);
+    const cdb = await cloudinary.uploader.upload(file.content);
+    const image = {
+      public_id: cdb.public_id,
+      url: cdb.secure_url,
+    };
+    product.images.push(image);
+    await product.save();
+    return res.status(200).json({
+      message: "product image updated successfully",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "internal server error",
+      success: false,
+    });
   }
 };
