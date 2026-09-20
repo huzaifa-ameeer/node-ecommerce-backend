@@ -23,3 +23,29 @@ export const createCategoryController = async (req, res) => {
         })
     }
 }
+
+//get all categories controller
+export const getAllCategoriesController = async (req, res) => {
+    try {
+        const categories = await categoryModel.find({})
+        if(!categories) {
+            return res.status({
+                message: "no category exists",
+                success: false
+            })
+        }
+        return res.status(200).json({
+            message: "categories fetched successfully",
+            success: true,
+            total_categories: categories.length,
+            categories
+        })
+    } catch (error) {z
+        console.log(error)
+        return res.status(500).json({
+            message: "internal server error",
+            success: false
+        })
+    }
+}
+

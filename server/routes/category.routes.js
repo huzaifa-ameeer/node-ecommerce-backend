@@ -1,6 +1,6 @@
 import express from "express"
 import isAuth from "../middleware/auth.middleware.js"
-import { createCategoryController } from "../controllers/category.controller.js"
+import { createCategoryController, getAllCategoriesController } from "../controllers/category.controller.js"
 
 const router = express.Router()
 
@@ -8,5 +8,7 @@ const router = express.Router()
 
 //create category (POST)
 router.post("/create", isAuth, createCategoryController)
+//get all categories (GET)
+router.get("/get-all", getAllCategoriesController)
 
 export default router
