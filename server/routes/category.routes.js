@@ -1,6 +1,6 @@
 import express from "express"
 import isAuth from "../middleware/auth.middleware.js"
-import { createCategoryController, deleteCategoryController, getAllCategoriesController } from "../controllers/category.controller.js"
+import { createCategoryController, deleteCategoryController, getAllCategoriesController, updateCategoryController } from "../controllers/category.controller.js"
 
 const router = express.Router()
 
@@ -12,5 +12,7 @@ router.post("/create", isAuth, createCategoryController)
 router.get("/get-all", getAllCategoriesController)
 //delete category (DELETE)
 router.delete("/delete/:id", isAuth, deleteCategoryController)
+//update category (PUT)
+router.put("/update/:id", isAuth, updateCategoryController)
 
 export default router

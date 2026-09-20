@@ -1,11 +1,12 @@
 import productModel from "../models/product.model.js";
+import categoryModel from "../models/category.model.js";
 import { v2 as cloudinary } from "cloudinary";
 import { getDataUri } from "../utils/feature.js";
 
 //get all product controllet
 export const getAllProductsController = async (req, res) => {
   try {
-    const products = await productModel.find({});
+    const products = await productModel.find({}).populate("category");;
     return res.status(200).json({
       message: "products fetched successfully",
       success: true,
@@ -50,12 +51,20 @@ export const createProductController = async (req, res) => {
   try {
     const { name, description, price, stock, category } = req.body;
 
-    // if(!name || !description || !price || !stock || !category) {
-    //     return res.status(400).json({
-    //         message: "please provide all the field content",
-    //         success: false
-    //     })
-    // }
+    if(!name || !description || !price || !stock || !category) {
+        return res.status(400).json({
+            message: "please provide all the field content",
+            success: false
+        })
+    }
+    const categoryExists = await categoryModel.findById(category);
+
+    if (!categoryExists) {
+      return res.status(404).json({
+        message: "category not found",
+        success: false,
+      });
+    }
     if (!req.file) {
       return res.status(400).json({
         message: "please provide product image",
@@ -84,12 +93,21 @@ export const createProductController = async (req, res) => {
       product,
     });
   } catch (error) {
-    return res.status(500).json({
-      message: "invalid id",
+  console.log(error);
+
+  if (error.name === "CastError") {
+    return res.status(400).json({
+      message: "invalid category id",
       success: false,
     });
   }
-};
+
+  return res.status(500).json({
+    message: "internal server error",
+    success: false,
+  });
+}
+}
 
 //update product controller
 export const updateProductController = async (req, res) => {
@@ -172,11 +190,12 @@ export const deleteProductController = async (req, res) => {
         success: false,
       });
     }
-    for (const image of product.images) {
-      if (image.public_id) {
-        await cloudinary.uploader.destroy(image.public_id);
-      }
-    }
+   for (const image of product.images) {
+  if (image.public_id) {
+    const result = await cloudinary.uploader.destroy(image.public_id);
+    
+  }
+}
     await productModel.findByIdAndDelete(req.params.id);
     return res.status(200).json({
       message: "Product and image deleted successfully",
