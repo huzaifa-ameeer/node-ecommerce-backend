@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createProductController,
+  deleteProductController,
   getAllProductsController,
   getSingleProductController,
   updateProductController,
@@ -24,6 +25,9 @@ router.put("/update/:id", isAuth, updateProductController);
 //update product image (PUT)
 router.put("/update-image/:id",
   isAuth, singleUpload, updateProductImageController,);
+//delete product (DEL)
+router.delete("/delete-product/:id", isAuth, deleteProductController)
+
 
 //exports
 export default router;
