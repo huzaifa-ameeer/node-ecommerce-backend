@@ -78,3 +78,44 @@ export const deleteCategoryController = async (req, res) => {
     });
   }
 };
+
+//update category controller
+export const updateCategoryController = async (req, res) => {
+  try {
+    const category = await categoryModel.findById(req.params.id);
+
+    if (!category) {
+      return res.status(404).json({
+        message: "category not found",
+        success: false,
+      });
+    }
+
+    const { updatedCategory } = req.body;
+
+    if (!updatedCategory) {
+      return res.status(400).json({
+        message: "please provide any category",
+        success: false,
+      });
+    }
+
+    category.category = updatedCategory;
+
+    await category.save();
+
+    return res.status(200).json({
+      message: "category updated successfully",
+      success: true,
+      category,
+    });
+
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: "internal server error",
+      success: false,
+    });
+  }
+};
