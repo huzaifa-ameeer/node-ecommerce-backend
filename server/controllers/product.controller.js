@@ -190,3 +190,49 @@ export const deleteProductController = async (req, res) => {
     });
   }
 };
+
+//delete product image controller
+export const deleteProductImageController = async (req, res) => {
+  try {
+    const { id, public_id } = req.params;
+    // const { public_id } = req.body;
+    const product = await productModel.findById(id);
+    if (!product) {
+      return res.status(404).json({
+        message: "product not found",
+        success: false,
+      });
+    }
+
+    const image = product.images.find(
+      (image) => image.public_id === public_id
+    );
+
+    if (!image) {
+      return res.status(404).json({
+        message: "image not found",
+        success: false,
+      });
+    }
+
+    await cloudinary.uploader.destroy(image.public_id);
+
+    product.images = product.images.filter(
+      (image) => image.public_id !== public_id
+    );
+
+    await product.save();
+
+    return res.status(200).json({
+      message: "image deleted successfully",
+      success: true,
+      product,
+    });
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      message: "internal server error",
+      success: false,
+    });
+  }
+};
