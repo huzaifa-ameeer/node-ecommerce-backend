@@ -9,6 +9,7 @@ import userRoute from "./routes/user.routes.js"
 import { v2 as cloudinary } from "cloudinary";
 import productRoutes from "./routes/product.routes.js"
 import categoryRoutes from "./routes/category.routes.js"
+import orderRoutes from "./routes/order.route.js"
 
 //dot env config
 dotenv.config();
@@ -37,6 +38,7 @@ app.use("/api/v1", testRoute)
 app.use("/api/v1/user", userRoute)
 app.use("/api/v1/products", productRoutes)
 app.use("/api/v1/category", categoryRoutes)
+app.use("/api/v1/order", orderRoutes)
 
 
 //server listening
