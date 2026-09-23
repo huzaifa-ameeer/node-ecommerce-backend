@@ -115,6 +115,7 @@ export const getOrdersController = async (req, res)=> {
   }
 }
 
+//get single order controller
 export const getSingleOrderController = async (req, res) => {
   try {
     const order = await orderModel.findById(req.params.id)
