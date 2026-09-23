@@ -88,3 +88,51 @@ export const createOrderController = async (req, res) => {
     });
   }
 };
+
+//get all orders controller
+export const getOrdersController = async (req, res)=> {
+  try {
+    const orders = await orderModel.find({ user: req.user._id })
+
+    if (orders.length === 0) {
+      return res.status(400).json({
+        message: "orders not found",
+        success: false
+      })
+    }
+
+    return res.status(200).json({
+      message: "orders fetched successfully",
+      success: true,
+      totalOrders: orders.length,
+      orders
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: "internal server error",
+      success: false
+    })
+  }
+}
+
+// export const getSingleOrderController = async (req, res) => {
+//   try {
+//     const order = await orderModel.findById(req.params.id)
+//     if(!order) {
+//       return res.status(404).json({
+//         message: "order not found",
+//         success: false
+//       })
+//     }
+//     return res.status(200).json({
+//       message: "order fetched successfully",
+//       success: true,
+//       order
+//     })
+//   } catch (error) {
+//     return res.status(500).json({
+//       message: "internal server error",
+//       success: false
+//     })
+//   }
+// }
