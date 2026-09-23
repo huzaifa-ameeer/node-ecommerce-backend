@@ -1,45 +1,43 @@
 import dotenv from "dotenv";
 import express from "express";
 import connectDb from "./config/db.js";
-import cors from "cors"
+import cors from "cors";
 import chalk from "chalk";
 import cookieParser from "cookie-parser";
 import testRoute from "./routes/test.routes.js";
-import userRoute from "./routes/user.routes.js"
+import userRoute from "./routes/user.routes.js";
 import { v2 as cloudinary } from "cloudinary";
-import productRoutes from "./routes/product.routes.js"
-import categoryRoutes from "./routes/category.routes.js"
-import orderRoutes from "./routes/order.route.js"
+import productRoutes from "./routes/product.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
+import orderRoutes from "./routes/order.route.js";
 
 //dot env config
 dotenv.config();
 
 //database connection
-connectDb()
+connectDb();
 
 //cloudinary config
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_SECRET
-})
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 //middlewares
-app.use(express.json())
-app.use(cors())
-app.use(cookieParser())
-
+app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
 
 //routes
-app.use("/api/v1", testRoute)
-app.use("/api/v1/user", userRoute)
-app.use("/api/v1/products", productRoutes)
-app.use("/api/v1/category", categoryRoutes)
-app.use("/api/v1/order", orderRoutes)
-
+app.use("/api/v1", testRoute);
+app.use("/api/v1/user", userRoute);
+app.use("/api/v1/products", productRoutes);
+app.use("/api/v1/category", categoryRoutes);
+app.use("/api/v1/order", orderRoutes);
 
 //server listening
 app.listen(port, () => {
