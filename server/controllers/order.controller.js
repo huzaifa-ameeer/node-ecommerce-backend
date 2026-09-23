@@ -18,19 +18,42 @@ export const createOrderController = async (req, res) => {
 
     if (
       !shippingInfo ||
-      !orderItems ||
+      !Array.isArray(orderItems) ||
+      orderItems.length === 0 ||
       !paymentMethod ||
-      !paymentInfo ||
       itemPrice === undefined ||
       tax === undefined ||
       totalAmount === undefined ||
-      shippingCharges === undefined ||
-      !orderStatus
+      shippingCharges === undefined
     ) {
       return res.status(400).json({
         success: false,
         message: "Please provide all required order fields",
       });
+    }
+
+    for (const item of orderItems) {
+      if (!item.product || !Number.isInteger(item.quantity) || item.quantity < 1) {
+        return res.status(400).json({
+          success: false,
+          message: "Each order item must include a product and a valid quantity",
+        });
+      }
+
+      const product = await productModel.findById(item.product);
+      if (!product) {
+        return res.status(404).json({
+          success: false,
+          message: `Product ${item.product} not found`,
+        });
+      }
+
+      if (product.stock < item.quantity) {
+        return res.status(400).json({
+          success: false,
+          message: `Insufficient stock for ${product.name}`,
+        });
+      }
     }
 
     await orderModel.create({
@@ -44,6 +67,7 @@ export const createOrderController = async (req, res) => {
       totalAmount,
       shippingCharges,
       orderStatus,
+      ...(paymentInfo !== undefined && { paymentInfo }),
     });
 
     for (let i = 0; i < orderItems.length; i++) {

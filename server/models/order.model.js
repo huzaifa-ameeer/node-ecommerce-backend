@@ -26,9 +26,10 @@ const orderSchema = new mongoose.Schema(
           type: Number,
           required: [true, "product price is required"],
         },
-        productQuantity: {
+        quantity: {
           type: Number,
           required: [true, "product quantity is required"],
+          min: [1, "product quantity must be at least 1"],
         },
         productImage: {
           type: String,
