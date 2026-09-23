@@ -33,7 +33,7 @@ app.use(cors());
 app.use(cookieParser());
 
 //routes
-app.use("/api/v1", testRoute);
+app.use("/", testRoute);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/category", categoryRoutes);
