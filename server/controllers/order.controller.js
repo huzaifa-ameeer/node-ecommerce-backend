@@ -139,3 +139,28 @@ export const getSingleOrderController = async (req, res) => {
 }
 
 //=============ADMIN-SECTION=============//
+
+//get all orders controller
+export const getAdminAllOrdersController = async (req, res) => {
+  try {
+    const orders = await orderModel.find({})
+    if(!orders) {
+      return res.status(400).json({
+        message: "orders not found",
+        success: false
+      })
+    }
+    return res.status(200).json({
+      message: "orders fetched successfully",
+      success: true,
+      totalOrders: orders.length,
+      orders
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      message: "internal server error",
+      success: false
+    })
+  }
+}

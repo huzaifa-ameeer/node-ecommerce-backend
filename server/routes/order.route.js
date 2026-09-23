@@ -1,6 +1,6 @@
 import express from "express"
-import isAuth from "../middleware/auth.middleware.js"
-import { createOrderController, getOrdersController, getSingleOrderController } from "../controllers/order.controller.js"
+import  isAuth, { isAdmin } from "../middleware/auth.middleware.js"
+import { createOrderController, getAdminAllOrdersController, getOrdersController, getSingleOrderController } from "../controllers/order.controller.js"
 
 const router = express.Router()
 
@@ -14,6 +14,8 @@ router.get("/get-all", isAuth,
 )
 // get single order (GET)
 router.get("/get/:id", isAuth, getSingleOrderController)
+//get all orders as admin(GET)
+router.get("/admin/get-all", isAuth, isAdmin, getAdminAllOrdersController)
 
 //export 
 export default router

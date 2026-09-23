@@ -26,7 +26,7 @@ const isAuth = async (req, res, next) => {
 };
 
 //admin auth
-const isAdmin = async (req, res, next) => {
+export const isAdmin = async (req, res, next) => {
   if(req.user.role !== "admin") {
     return res.status(401).json({
       message: "admin only",
@@ -37,4 +37,4 @@ const isAdmin = async (req, res, next) => {
 }
 
 //exports
-export default isAuth;
+export default isAuth
