@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import userModel from "../models/user.model.js";
 
+//user auth
 const isAuth = async (req, res, next) => {
   const { token } = req.cookies;
   if (!token) {
@@ -24,4 +25,16 @@ const isAuth = async (req, res, next) => {
   next();
 };
 
+//admin auth
+const isAdmin = async (req, res, next) => {
+  if(req.user.role !== "admin") {
+    return res.status(401).json({
+      message: "admin only",
+      success: false
+    })
+  }
+  next()
+}
+
+//exports
 export default isAuth;
