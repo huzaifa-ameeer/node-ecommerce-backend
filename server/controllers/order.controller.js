@@ -115,24 +115,24 @@ export const getOrdersController = async (req, res)=> {
   }
 }
 
-// export const getSingleOrderController = async (req, res) => {
-//   try {
-//     const order = await orderModel.findById(req.params.id)
-//     if(!order) {
-//       return res.status(404).json({
-//         message: "order not found",
-//         success: false
-//       })
-//     }
-//     return res.status(200).json({
-//       message: "order fetched successfully",
-//       success: true,
-//       order
-//     })
-//   } catch (error) {
-//     return res.status(500).json({
-//       message: "internal server error",
-//       success: false
-//     })
-//   }
-// }
+export const getSingleOrderController = async (req, res) => {
+  try {
+    const order = await orderModel.findById(req.params.id)
+    if(!order) {
+      return res.status(404).json({
+        message: "order not found",
+        success: false
+      })
+    }
+    return res.status(200).json({
+      message: "order fetched successfully",
+      success: true,
+      order
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: "internal server error",
+      success: false
+    })
+  }
+}

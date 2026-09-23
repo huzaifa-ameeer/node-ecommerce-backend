@@ -13,7 +13,7 @@ router.get("/get-all", isAuth,
     getOrdersController
 )
 // get single order (GET)
-// router.get("/get/:id", isAuth, getSingleOrderController)
+router.get("/get/:id", isAuth, getSingleOrderController)
 
 //export 
 export default router
